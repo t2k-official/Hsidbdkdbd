@@ -39,10 +39,9 @@
     function getTimestamp() {
       return Math.floor(Date.now() / 1000);
     }
-
+    const latestVersion = '0.3.0'
     // Function to construct the new URL with timestamp and code
     function constructNewURL() {
-      const latestVersion = '0.3.0'
       const showAd = getQueryParam('showAd');
       const scriptVersion = getQueryParam('scriptVersion');
       //const scriptVerifyCode = getQueryParam('scriptVerifyCode');
@@ -76,7 +75,7 @@
           document.getElementById('downloadButton').onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
           return;
         }
-        document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
+        document.getElementById('message').innerText = 'Script Up To Date: v' + latestVersion + '. Click the button to verify.';
         document.getElementById('redirectButton').classList.remove('hidden');
         document.getElementById('redirectButton').onclick = () => location.href = newURL;
       } else {
