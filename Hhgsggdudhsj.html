@@ -45,11 +45,11 @@
       const latestVersion = '0.3.0'
       const showAd = getQueryParam('showAd');
       const scriptVersion = getQueryParam('scriptVersion');
-      const scriptVerifyCode = getQueryParam('scriptVerifyCode');
-      if (!scriptVerifyCode) {
+      //const scriptVerifyCode = getQueryParam('scriptVerifyCode');
+      /*if (!scriptVerifyCode) {
         console.error('Modded file')
         location.href = 'https://krunker.io'
-      }
+      }*/
       if (showAd && scriptVersion) {
         if (scriptVersion !== latestVersion && scriptVersion !== 'dev') {
           return 'Script-Update'
