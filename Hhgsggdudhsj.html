@@ -52,8 +52,11 @@
       const newURL = constructNewURL();
       if (newURL) {
         if (newURL === 'Script-Update') {
-          document.getElementById('message').innerText = 'Verification failed: Script needs updating! <a href="https://github.com/t2k-official/T2M-Krunker-Cheats">Click here to download new script</a>';
-            return
+          document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
+          const downloadButton = document.getElementById('downloadButton');
+          downloadButton.style.display = 'block';
+          downloadButton.onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
+          return;
         }
         const redirectButton = document.getElementById('redirectButton');
         redirectButton.style.display = 'block';
