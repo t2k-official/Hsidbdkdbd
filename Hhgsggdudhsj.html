@@ -31,9 +31,13 @@
 
     // Function to construct the new URL with timestamp and code
     function constructNewURL() {
+      const latestVersion = '0.3.0'
       const showAd = getQueryParam('showAd');
       const scriptVersion = getQueryParam('scriptVersion');
       if (showAd && scriptVersion) {
+        if (scriptVersion !== latestVersion && scriptVersion !== 'dev') {
+          return 'script update required'
+        }
         const timestamp = getTimestamp();
         return `https://t2k-official.github.io/Hsidbdkdbd/Gsusbdudhdihdf.html?showAd=${showAd}&scriptVersion=${scriptVersion}`;
       } else {
@@ -44,7 +48,7 @@
 
     // Function to show the button after a delay
     function showButton() {
-      document.getElementById('message').innerText = 'Device has been verified! Please Click the verify button to procced';
+      document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
       const newURL = constructNewURL();
       if (newURL) {
         const redirectButton = document.getElementById('redirectButton');
