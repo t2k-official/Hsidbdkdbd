@@ -61,12 +61,16 @@
         return null;
       }
     }
-
+    function consoleLog() {
+      console.log('Script out of date')
+    }
     // Function to show the button after a delay
-    function showButton() {
+    async function showButton() {
       const newURL = constructNewURL();
       if (newURL) {
+        document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
         if (newURL === 'Script-Update') {
+          await setTimeout(consoleLog, 2000);
           document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
           document.getElementById('downloadButton').classList.remove('hidden');
           document.getElementById('downloadButton').onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
