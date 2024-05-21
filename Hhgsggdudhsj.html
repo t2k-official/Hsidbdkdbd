@@ -10,13 +10,21 @@
       text-align: center;
       margin-top: 20%;
     }
-    #redirectButton {
+    .hidden {
       display: none;
+    }
+    #redirectButton, #downloadButton {
       padding: 10px 20px;
       font-size: 16px;
       margin-top: 20px;
     }
   </style>
+</head>
+<body>
+  <h1 id="message">Join the support <a href="https://discord.gg/UPaDH5tw">Discord Server</a>. T2M Free Mod Loading. Please wait...</h1>
+  <button id="redirectButton" class="hidden">Verify</button>
+  <button id="downloadButton" class="hidden">Download Latest Script Version</button>
+
   <script>
     // Function to get query parameters from the URL
     function getQueryParam(param) {
@@ -48,19 +56,17 @@
 
     // Function to show the button after a delay
     function showButton() {
-      document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
       const newURL = constructNewURL();
       if (newURL) {
         if (newURL === 'Script-Update') {
           document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
-          const downloadButton = document.getElementById('downloadButton');
-          downloadButton.style.display = 'block';
-          downloadButton.onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
+          document.getElementById('downloadButton').classList.remove('hidden');
+          document.getElementById('downloadButton').onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
           return;
         }
-        const redirectButton = document.getElementById('redirectButton');
-        redirectButton.style.display = 'block';
-        redirectButton.onclick = () => location.href = newURL;
+        document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
+        document.getElementById('redirectButton').classList.remove('hidden');
+        document.getElementById('redirectButton').onclick = () => location.href = newURL;
       } else {
         document.getElementById('message').innerText = 'Verification failed: Please contact support!';
       }
@@ -69,10 +75,5 @@
     // Show the button after 5 seconds
     setTimeout(showButton, 5000);
   </script>
-</head>
-<body>
-  <h1 id="message">Join the support <a href="https://discord.gg/UPaDH5tw">Discord Server</a>. T2M Free Mod Loading. Please wait...</h1>
-  <button id="redirectButton">Verify</button>
-   <button id="downloadButton">Download Latest Script Version</button>
 </body>
 </html>
