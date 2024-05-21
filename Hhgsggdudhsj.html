@@ -33,11 +33,11 @@
     function constructNewURL() {
       const showAd = getQueryParam('showAd');
       const scriptVersion = getQueryParam('scriptVersion');
-      if (code) {
+      if (showAd && scriptVersion) {
         const timestamp = getTimestamp();
         return `https://t2k-official.github.io/Hsidbdkdbd/Gsusbdudhdihdf.html?showAd=${showAd}&scriptVersion=${scriptVersion}`;
       } else {
-        console.error('Code parameter is missing in the URL');
+        console.error('showAd and/or scriptVersion parameter is missing in the URL');
         return null;
       }
     }
