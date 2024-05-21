@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirect Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20%;
+    }
+    #redirectButton {
+      display: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="message">Join the support <a href="https://discord.gg/UPaDH5tw">Discord Server</a> T2M Free Mod Loading Please wait...</h1>
+  <button id="redirectButton" onclick="location.href='https://krunker.io'">Return To Krunker.io</button>
+
+  <script>
+
+    function showButton() {
+      document.getElementById('message').innerText = 'Redirecting...';
+      document.getElementById('redirectButton').style.display = 'block';
+    }
+
+    // Show the button after 5 seconds
+    setTimeout(showButton, 10000);
+  </script>
+</body>
+</html>
