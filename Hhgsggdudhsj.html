@@ -60,16 +60,19 @@
         return null;
       }
     }
-    function showButton1(newURL) {
-      if (newURL === 'Script-Update') {
-          document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
+    function scriptUpdate() {
+      document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
           document.getElementById('downloadButton').classList.remove('hidden');
           document.getElementById('downloadButton').onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
-          return;
-        }
-        document.getElementById('message').innerText = 'Script Up To Date: v' + latestVersion + '. Click the button to verify.';
-        document.getElementById('redirectButton').classList.remove('hidden');
-        document.getElementById('redirectButton').onclick = () => location.href = newURL;
+    }
+    function scriptOk() {
+      const newURL = constructNewURL();
+      if(newURL) {
+      document.getElementById('message').innerText = 'Script Up To Date: v' + latestVersion + '. Click the button to verify.';
+      document.getElementById('redirectButton').classList.remove('hidden');
+      document.getElementById('redirectButton').onclick = () => location.href = newURL;
+      } else {
+        document.getElementById('message').innerText = 'Verification failed: Please contact support!';
       }
     }
     // Function to show the button after a delay
@@ -77,7 +80,12 @@
       const newURL = constructNewURL();
       if (newURL) {
         document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
-        await setTimeout(showButton1(newURL), 2000);
+        if (newURL === 'Script-Update') {
+          setTimeout(scriptUpdate, 2000)
+          return;
+        }
+        setTimeout(scriptOk, 2000)
+      }
         else {
         document.getElementById('message').innerText = 'Verification failed: Please contact support!';
       }
