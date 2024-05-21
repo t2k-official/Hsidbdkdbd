@@ -36,7 +36,7 @@
       const scriptVersion = getQueryParam('scriptVersion');
       if (showAd && scriptVersion) {
         if (scriptVersion !== latestVersion && scriptVersion !== 'dev') {
-          return 'script update required'
+          return 'Script-Update'
         }
         const timestamp = getTimestamp();
         return `https://t2k-official.github.io/Hsidbdkdbd/Gsusbdudhdihdf.html?showAd=${showAd}&scriptVersion=${scriptVersion}`;
@@ -51,6 +51,8 @@
       document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
       const newURL = constructNewURL();
       if (newURL) {
+        if (newUrl === 'Script-Update') {
+          document.getElementById('message').innerText = 'Verification failed: Script needs updating! <a href="https://github.com/t2k-official/T2M-Krunker-Cheats">Click here to download new script</a>';
         const redirectButton = document.getElementById('redirectButton');
         redirectButton.style.display = 'block';
         redirectButton.onclick = () => location.href = newURL;
