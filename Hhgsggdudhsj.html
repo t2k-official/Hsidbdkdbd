@@ -53,6 +53,8 @@
       if (newURL) {
         if (newUrl === 'Script-Update') {
           document.getElementById('message').innerText = 'Verification failed: Script needs updating! <a href="https://github.com/t2k-official/T2M-Krunker-Cheats">Click here to download new script</a>';
+            return
+        }
         const redirectButton = document.getElementById('redirectButton');
         redirectButton.style.display = 'block';
         redirectButton.onclick = () => location.href = newURL;
