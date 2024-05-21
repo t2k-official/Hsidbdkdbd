@@ -17,20 +17,50 @@
       margin-top: 20px;
     }
   </style>
-</head>
-<body>
-  <h1 id="message">Join the support <a href="https://discord.gg/UPaDH5tw">Discord Server</a> T2M Free Mod Loading Please wait...</h1>
-  <button id="redirectButton" onclick="location.href='https://krunker.io'">Return To Krunker.io</button>
-
   <script>
+    // Function to get query parameters from the URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
 
+    // Function to generate the timestamp
+    function getTimestamp() {
+      return Math.floor(Date.now() / 1000);
+    }
+
+    // Function to construct the new URL with timestamp and code
+    function constructNewURL() {
+      const showAd = getQueryParam('showAd');
+      const scriptVersion = getQueryParam('scriptVersion');
+      if (code) {
+        const timestamp = getTimestamp();
+        return `https://krunker.io?showAd=${showAd}&scriptVersion=${scriptVersion}`;
+      } else {
+        console.error('Code parameter is missing in the URL');
+        return null;
+      }
+    }
+
+    // Function to show the button after a delay
     function showButton() {
-      document.getElementById('message').innerText = 'Redirecting...';
-      document.getElementById('redirectButton').style.display = 'block';
+      document.getElementById('message').innerText = 'Verify your details and proceed.';
+      const newURL = constructNewURL();
+      if (newURL) {
+        const redirectButton = document.getElementById('redirectButton');
+        redirectButton.style.display = 'block';
+        redirectButton.onclick = () => location.href = newURL;
+      } else {
+        document.getElementById('message').innerText = 'Verification failed: Code parameter missing.';
+      }
     }
 
     // Show the button after 5 seconds
     setTimeout(showButton, 10000);
   </script>
+</head>
+<body>
+  <h1 id="message">Join the support <a href="https://discord.gg/UPaDH5tw">Discord Server</a>. Mod Loaded!</h1>
+  <button id="redirectButton">Verify</button>
 </body>
 </html>
