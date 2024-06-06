@@ -1,9 +1,9 @@
 body {
-    background-image: url('your-image.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: url(img.jpg) no-repeat;
     background-position: center;
-    height: 100vh; /* Set the height of the container to 100% of the viewport height */
+    background-size: cover;
+    width: 400px;
+    height: 600px;
 }
 
 
