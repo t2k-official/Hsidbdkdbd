@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>T2M Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20%;
+    }
+    .hidden {
+      display: none;
+    }
+    #redirectButton, #downloadButton {
+      text-align: center;
+      color: white;
+      cursor: pointer;
+      padding: 0.5em;
+      background: red;
+      border: 3px solid rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1 id="message">Join the support <a href="https://discord.gg/UPaDH5tw">Discord Server</a>. T2M Free Mod Loading. Please wait...</h1>
+  <button id="redirectButton" class="hidden">Verify</button>
+  <button id="downloadButton" class="hidden">Download Latest Script Version</button>
+
+  <script>
+    // Function to get query parameters from the URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Function to generate the timestamp
+    function getTimestamp() {
+      return Math.floor(Date.now() / 1000);
+    }
+    const latestVersion = '1.1.0'
+    // Function to construct the new URL with timestamp and code
+    function constructNewURL() {
+      const showAd = getQueryParam('showAd');
+      const scriptVersion = getQueryParam('scriptVersion');
+      //const scriptVerifyCode = getQueryParam('scriptVerifyCode');
+      /*if (!scriptVerifyCode) {
+        console.error('Modded file')
+        location.href = 'https://krunker.io'
+      }*/
+      if (showAd && scriptVersion) {
+        if (scriptVersion !== latestVersion && scriptVersion !== 'dev') {
+          return 'Script-Update'
+        }
+        const timestamp = getTimestamp();
+        return `https://t2mfut.xyz/krunker/Gsusbdudhdihdf.html?showAd=${showAd}&scriptVersion=${scriptVersion}`;
+      } else {
+        console.error('showAd and/or scriptVersion parameter is missing in the URL');
+        return null;
+      }
+    }
+    function scriptUpdate() {
+      document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
+          document.getElementById('downloadButton').classList.remove('hidden');
+          document.getElementById('downloadButton').onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
+    }
+    function scriptOk() {
+      const newURL = constructNewURL();
+      if(newURL) {
+      document.getElementById('message').innerText = 'Script Up To Date: v' + latestVersion + '. Click the button to verify.';
+      document.getElementById('redirectButton').classList.remove('hidden');
+      document.getElementById('redirectButton').onclick = () => location.href = newURL;
+      } else {
+        document.getElementById('message').innerText = 'Verification failed: Please contact support!';
+      }
+    }
+    // Function to show the button after a delay
+    async function showButton() {
+      const newURL = constructNewURL();
+      if (newURL) {
+        document.getElementById('message').innerText = 'Device has been verified! Verifying Script Version Please wait...';
+        if (newURL === 'Script-Update') {
+          setTimeout(scriptUpdate, 2000)
+          return;
+        }
+        setTimeout(scriptOk, 2000)
+      }
+        else {
+        document.getElementById('message').innerText = 'Verification failed: Please contact support!';
+      }
+    }
+
+    // Show the button after 5 seconds
+    setTimeout(showButton, 5000);
+  </script>
+</body>
+</html>
