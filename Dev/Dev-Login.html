@@ -9,17 +9,71 @@
       font-family: Arial, sans-serif;
       text-align: center;
       margin-top: 20%;
+      background-color: #333;
     }
     .hidden {
-      display: none;
+        display: none;
     }
-    #submit {
-      text-align: center;
-      color: white;
-      cursor: pointer;
-      padding: 0.5em;
-      background: red;
-      border: 3px solid rgba(0, 0, 0, 0.2);
+    h1, h2, h3 {
+        color: white;
+        margin: 0;
+        margin-bottom: 1em;
+        transition: color 0.3s ease-in-out;
+        transition: margin-bottom 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(-10px);
+    }
+    input {
+        padding: 0.5em;
+        margin: 0.5em;
+        border: 3px solid rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease-in-out;
+        outline: none;
+        max-width: 300px;
+        font-size: 16px;
+        color: #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        &:focus {
+            background-color: #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+    }
+    #submit, #signout, #account {
+        padding: 0.5em;
+        margin: 0.5em;
+        border: 3px solid rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #ff0000;
+        transition: background-color 0.3s ease-in-out;
+        outline: none;
+        max-width: 300px;
+        font-size: 16px;
+        color: #f1f1f1;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        &:focus {
+            background-color: #ff0000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+    }
+    #submit:disabled {
+        background-color: #333;
+        cursor: not-allowed;
+    }
+    #submit:hover, #account:hover, #signout:hover {
+        transform: translateY(0);
+        background-color: #f1f1f1;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        color: black;
+    }
+    #submit:hover:disabled, #signout:hover:disabled, #account:hover:disabled {
+        cursor: not-allowed;
+        background-color: #333;
     }
   </style>
 </head>
@@ -29,71 +83,45 @@
   <input type="password" id="password" placeholder="Password" required>
   <button type="submit" id="submit">Login</button>
 
-  <script>
-    // Function to get query parameters from the URL
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js';
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWVL96nbs7et7JW25gSzQuc7lmfmrMD0U",
+      authDomain: "madfut-verifier.firebaseapp.com",
+      databaseURL: "https://madfut-verifier-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "madfut-verifier",
+      storageBucket: "madfut-verifier.appspot.com",
+      messagingSenderId: "378821209730",
+      appId: "1:378821209730:web:a2aff03f53aefcb60b4e9b",
+      measurementId: "G-M3GGG96F77"
+    };
+
+// Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const submit = document.getElementById('submit')
+    const auth = getAuth(app)
+    submit.addEventListener('click', async (e) => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if(!email.includes('admin')) {
+      document.getElementById('message').innerText = 'Error: Make sure you enter your admin account credentials!'
+      return
     }
 
-    // Function to generate the timestamp
-    function getTimestamp() {
-      return Math.floor(Date.now() / 1000);
-    }
-    const latestVersion = '1.1.0'
-    // Function to construct the new URL with timestamp and code
-    function constructNewURL() {
-      const showAd = getQueryParam('showAd');
-      const scriptVersion = getQueryParam('scriptVersion');
-      //const scriptVerifyCode = getQueryParam('scriptVerifyCode');
-      /*if (!scriptVerifyCode) {
-        console.error('Modded file')
-        location.href = 'https://krunker.io'
-      }*/
-      if (showAd && scriptVersion) {
-        if (scriptVersion !== latestVersion && scriptVersion !== 'dev') {
-          return 'Script-Update'
-        }
-        const timestamp = getTimestamp();
-        return `https://krunker.io?showAd=${showAd}&scriptVersion=${scriptVersion}`;
-      } else {
-        console.error('showAd and/or scriptVersion parameter is missing in the URL');
-        return null;
+      e.preventDefault()
+      try {
+        const result = await signInWithEmailAndPassword(auth, email, password)
+        console.log('Logged in as:', result.user.email)
+        document.getElementById('message').innerText = 'Logged in successfully!'
+        document.getElementById('submit').classList.add('hidden')
+        //location.href = 'https://t2mfut.xyz/dev/verified?' + new URLSearchParams( { email: result.user.email } ).toString()
+        location.href = 'http://192.168.1.168:8080/dev/verified?' + new URLSearchParams( { email: result.user.email } ).toString()
+      } catch (error) {
+        console.error('Error:', error)
+        document.getElementById('message').innerText = 'Error logging in: Check Your credentials!'
       }
-    }
-    function scriptUpdate() {
-      document.getElementById('message').innerText = 'Verification failed: Script needs updating!';
-          document.getElementById('downloadButton').classList.remove('hidden');
-          document.getElementById('downloadButton').onclick = () => location.href = 'https://github.com/t2k-official/T2M-Krunker-Cheats';
-    }
-    function scriptOk() {
-      const newURL = constructNewURL();
-      if(newURL) {
-      document.getElementById('message').innerText = 'Click the button to start the mod!';
-      document.getElementById('redirectButton').classList.remove('hidden');
-      document.getElementById('redirectButton').onclick = () => location.href = newURL;
-      } else {
-        document.getElementById('message').innerText = 'Verification failed: Please contact support!';
-      }
-    }
-    // Function to show the button after a delay
-    async function showButton() {
-      const newURL = constructNewURL();
-      if (newURL) {
-        document.getElementById('message').innerText = 'Welcome To T2Mods! Just doing some final checks...';
-        if (newURL === 'Script-Update') {
-          setTimeout(scriptUpdate, 3000)
-          return;
-        }
-        setTimeout(scriptOk, 3000)
-      }
-        else {
-        document.getElementById('message').innerText = 'Verification failed: Please contact support!';
-      }
-    }
-
-    // Show the button after 5 seconds
-    setTimeout(showButton, 5000);
+    })
   </script>
 </body>
 </html>

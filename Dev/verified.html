@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Madfut Verifier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20%;
+      background-color: #333;
+    }
+    .hidden {
+        display: none;
+    }
+    h1, h2, h3 {
+        color: white;
+        margin: 0;
+        margin-bottom: 1em;
+        transition: color 0.3s ease-in-out;
+        transition: margin-bottom 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(-10px);
+    }
+    input {
+        padding: 0.5em;
+        margin: 0.5em;
+        border: 3px solid rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease-in-out;
+        outline: none;
+        max-width: 300px;
+        font-size: 16px;
+        color: #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        &:focus {
+            background-color: #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+    }
+    #submit, #signout, #account {
+        padding: 0.5em;
+        margin: 0.5em;
+        border: 3px solid rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #ff0000;
+        transition: background-color 0.3s ease-in-out;
+        outline: none;
+        max-width: 300px;
+        font-size: 16px;
+        color: #f1f1f1;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease-in-out;
+        &:focus {
+            background-color: #ff0000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+    }
+    #submit:disabled {
+        background-color: #333;
+        cursor: not-allowed;
+    }
+    #submit:hover, #account:hover, #signout:hover {
+        transform: translateY(0);
+        background-color: #f1f1f1;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        color: black;
+    }
+    #submit:hover:disabled, #signout:hover:disabled, #account:hover:disabled {
+        cursor: not-allowed;
+        background-color: #333;
+    }
+  </style>
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut  } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js';
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWVL96nbs7et7JW25gSzQuc7lmfmrMD0U",
+      authDomain: "madfut-verifier.firebaseapp.com",
+      databaseURL: "https://madfut-verifier-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "madfut-verifier",
+      storageBucket: "madfut-verifier.appspot.com",
+      messagingSenderId: "378821209730",
+      appId: "1:378821209730:web:a2aff03f53aefcb60b4e9b",
+      measurementId: "G-M3GGG96F77"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    // Initialize Firebase Auth
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user) => {
+        console.log(user)
+      if (!user) {
+        // User is not signed in
+        //location.href = 'https://t2mfut.xyz/dev/dev-login'; // Redirect to sign-in page
+        location.href = 'http://192.168.1.168:8080/dev/dev-login'
+      } else {
+        // User is signed in
+        if(user.displayName === null) {
+            document.getElementById('message').textContent = 'Please Complete your Account Profile!'
+            document.getElementById('submit').disabled = true;
+            document.getElementById('submit').textContent = 'Disabled'
+            document.getElementById('account').classList.remove('hidden');
+            document.getElementById('account').onclick = () => location.href = 'http://192.168.1.168:8080/dev/dev-account'
+        }
+        document.getElementById('user-name').textContent = user.displayName;
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const submit = document.getElementById('submit');
+        const signout = document.getElementById('signout');
+      
+        signout.addEventListener('click', async () => {
+          try {
+            await auth.signOut()
+            console.log('User signed out!')
+            //location.href = 'https://t2mfut.xyz/dev/dev-login'; // Redirect to sign-in page
+            location.href = 'http://192.168.1.168:8080/dev/dev-login'
+          } catch (error) {
+            console.error('Error:', error)
+            alert(error)
+          }
+        });
+
+        submit.addEventListener('click', async () => {
+        console.log('submitted')
+        const token = document.getElementById('token').value;
+        const guildId = document.getElementById('guildId').value;
+        const displayName = document.getElementById('displayName').value;
+        if(!token || !guildId || !displayName) return alert('Please enter a value for all boxes!')
+        const email = guildId + '@t2mfut.xyz'
+        const password = token
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password)
+            console.log('Successfully Created A Verified User!')
+            alert('User Created Now Signing Out!')
+            auth.signOut()
+        } catch (error) {
+        console.error('Error:', error)
+        alert(error)
+      }
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Secure Verifier Page</h1>
+  <h3>Welcome, <span id="user-name"></span></h3>
+  <h3 id="message"></h3>
+  <button id="account" class="hidden">Go To Account Hub</button>
+  <br>
+  <input id="token" placeholder="Enter Bot Token:" required>
+  <br>
+  <input id="guildId" placeholder="Enter Guild Id:" required>
+  <br>
+  <input id="displayName" placeholder="Enter displayName:" required>
+  <br>
+  <button id="submit">Verify</button>
+  <h1>Logout</h1>
+  <button id="signout">Sign Out</button>
+</body>
+</html>
