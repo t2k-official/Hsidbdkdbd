@@ -115,8 +115,8 @@
         console.log('Logged in as:', result.user.email)
         document.getElementById('message').innerText = 'Logged in successfully!'
         document.getElementById('submit').classList.add('hidden')
-        //location.href = 'https://t2mfut.xyz/dev/verified?' + new URLSearchParams( { email: result.user.email } ).toString()
-        location.href = 'http://192.168.1.168:8080/dev/verified?' + new URLSearchParams( { email: result.user.email } ).toString()
+        location.href = 'https://t2mfut.xyz/dev/verified?' + new URLSearchParams( { email: result.user.email } ).toString()
+        //location.href = 'http://192.168.1.168:8080/dev/verified?' + new URLSearchParams( { email: result.user.email } ).toString()
       } catch (error) {
         console.error('Error:', error)
         document.getElementById('message').innerText = 'Error logging in: Check Your credentials!'
